@@ -1,23 +1,20 @@
 package edu.csusb.wemo;
 
+import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Adapter;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.csusb.wemo.RecyclerView.RInterface;
 import edu.csusb.wemo.RecyclerView.RViewAdapter;
 import edu.csusb.wemo.RecyclerView.WemoDeviceList;
-import edu.csusb.wemo.RecyclerView.feed;
 
-import static edu.csusb.wemo.R.styleable.RecyclerView;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RInterface{
     private android.support.v7.widget.RecyclerView rView;
     private RViewAdapter adapter;
     private List<WemoDeviceList> wemoDeviceList;
@@ -32,19 +29,27 @@ public class MainActivity extends AppCompatActivity {
         rView.setLayoutManager(new LinearLayoutManager(this));
 
         WemoDeviceList item = new WemoDeviceList();
-        item.setName("bird");
-        item.setDescription("dinosaurs are birds");
+        item.setName("Josiah");
+        item.setDescription("smells bad");
         WemoDeviceList item2 = new WemoDeviceList();
-        item.setName("birds");
-        item.setDescription("dinosaurs are birdss");
+        item2.setName("bees");
+        item2.setDescription("blah blah blah laws of aviation bees can't fly");
         List<WemoDeviceList> list = new ArrayList<>();
         list.add(item);
         list.add(item2);
 
-        adapter = new RViewAdapter(list,this);
+        adapter = new RViewAdapter(list,this,this);
         rView.setAdapter(adapter);
     }
 
 
+    @Override
+    public void onWemoSwitchClick(WemoDeviceList deviceList) {
+        Log.d("bird","up");
+    }
+
+    public void onUpdateDevice(WemoDeviceList deviceList){
+        adapter.updateDeviceList(deviceList);
+    }
 
 }

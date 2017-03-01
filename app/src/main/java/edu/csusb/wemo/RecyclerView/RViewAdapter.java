@@ -23,10 +23,12 @@ import static android.content.ContentValues.TAG;
 public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHolder> {
     private List<WemoDeviceList> wemoDeviceLists;
     private Context mContext;
+    private RInterface rInterface;
 
-    public RViewAdapter(List<WemoDeviceList> wemoDeviceLists, Context mContext) {
+    public RViewAdapter(List<WemoDeviceList> wemoDeviceLists, Context mContext, RInterface rInterface) {
         this.wemoDeviceLists = wemoDeviceLists;
         this.mContext = mContext;
+        this.rInterface = rInterface;
     }
 
 
@@ -40,20 +42,30 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
         final WemoDeviceList deviceList = wemoDeviceLists.get(position);
+        holder.descriptionView.setText(deviceList.getWemoDescription());
+        holder.nameView.setText(deviceList.getWemoName());
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 //switch on off
-                Log.d(TAG, "onClick: switch on off at position");
+                rInterface.onWemoSwitchClick(deviceList);
             }
         };
         holder.powerSwitch.setOnClickListener(listener);
     }
-
+    //TODO: change to serial number instead of names
+    public void updateDeviceList(WemoDeviceList deviceList){
+        for(int i = 0; i < wemoDeviceLists.size();i++){
+            if(wemoDeviceLists.get(i).getWemoName() == deviceList.getWemoName()){
+                wemoDeviceLists.set(i,deviceList);
+                notifyItemChanged(i);
+            }
+        }
+    }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return wemoDeviceLists.size();
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
