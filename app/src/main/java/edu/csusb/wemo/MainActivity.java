@@ -29,11 +29,11 @@ public class MainActivity extends AppCompatActivity implements RInterface{
         rView.setLayoutManager(new LinearLayoutManager(this));
 
         WemoDeviceList item = new WemoDeviceList();
-        item.setName("Josiah");
-        item.setDescription("smells bad");
+        item.setName("Wemo Device 1");
+        item.setDescription("LampDinningHall");
         WemoDeviceList item2 = new WemoDeviceList();
-        item2.setName("bees");
-        item2.setDescription("blah blah blah laws of aviation bees can't fly");
+        item2.setName("Wemo Device 2");
+        item2.setDescription("NightLightBedRoom");
         List<WemoDeviceList> list = new ArrayList<>();
         list.add(item);
         list.add(item2);

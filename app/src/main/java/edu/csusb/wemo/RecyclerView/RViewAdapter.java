@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -40,10 +41,27 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
     }
 
     @Override
-    public void onBindViewHolder(CustomViewHolder holder, int position) {
+    public void onBindViewHolder(final CustomViewHolder holder, int position) {
         final WemoDeviceList deviceList = wemoDeviceLists.get(position);
         holder.descriptionView.setText(deviceList.getWemoDescription());
         holder.nameView.setText(deviceList.getWemoName());
+        View.OnClickListener buttonHide = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.editButtonHide.setVisibility(View.GONE);
+                holder.editDescription.setVisibility(View.GONE);
+                holder.descriptionView.setText(holder.editDescription.getText());
+            }
+        };
+        View.OnClickListener buttonShow = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.editDescription.setVisibility(View.VISIBLE);
+                holder.editButtonHide.setVisibility(View.VISIBLE);
+
+                //rInterface.onWemoEditClick(deviceList);
+            }
+        };
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -52,6 +70,8 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             }
         };
         holder.powerSwitch.setOnClickListener(listener);
+        holder.editButtonHide.setOnClickListener(buttonHide);
+        holder.editButtonShow.setOnClickListener(buttonShow);
     }
     //TODO: change to serial number instead of names
     public void updateDeviceList(WemoDeviceList deviceList){
@@ -72,12 +92,18 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         protected TextView nameView;
         protected TextView descriptionView;
         protected Switch powerSwitch;
+        protected Button editButtonShow;
+        protected Button editButtonHide;
+        protected EditText editDescription;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
             this.nameView = (TextView) itemView.findViewById(R.id.name);
             this.descriptionView = (TextView) itemView.findViewById(R.id.description);
             this.powerSwitch = (Switch) itemView.findViewById(R.id.powerswitch);
+            this.editButtonShow = (Button) itemView.findViewById(R.id.editbuttonshow);
+            this.editButtonHide = (Button) itemView.findViewById(R.id.editbuttonhide);
+            this.editDescription = (EditText) itemView.findViewById(R.id.editdescription);
         }
     }
 }

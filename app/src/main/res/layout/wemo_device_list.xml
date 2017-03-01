@@ -31,4 +31,33 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
 
+    <Button
+        android:id="@+id/editbuttonshow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/powerswitch"
+        android:text="show"
+        android:layout_alignParentRight="true"/>
+
+    <Button
+        android:id="@+id/editbuttonhide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/powerswitch"
+        android:text="hide"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"/>
+
+    <EditText
+        android:id="@+id/editdescription"
+        android:background="@color/wemogreenlite"
+        android:visibility="gone"
+        android:maxLines="3"
+        android:textSize="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
 </RelativeLayout>
