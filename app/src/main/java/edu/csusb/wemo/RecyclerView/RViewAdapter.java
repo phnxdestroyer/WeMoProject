@@ -50,7 +50,9 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             public void onClick(View v) {
                 holder.editButtonHide.setVisibility(View.GONE);
                 holder.editDescription.setVisibility(View.GONE);
-                holder.descriptionView.setText(holder.editDescription.getText());
+                if(holder.editDescription.getText().length()>0){
+                    holder.descriptionView.setText(holder.editDescription.getText());
+                }
             }
         };
         View.OnClickListener buttonShow = new View.OnClickListener() {
