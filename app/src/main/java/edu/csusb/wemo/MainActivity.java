@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity implements RInterface{
 
         WemoDeviceList item = new WemoDeviceList();
         item.setName("Wemo Device 1");
-        item.setDescription("LampDinningHall");
+        //item.setDescription("LampDinningHall");
         WemoDeviceList item2 = new WemoDeviceList();
         item2.setName("Wemo Device 2");
-        item2.setDescription("NightLightBedRoom");
+        //item2.setDescription("NightLightBedRoom");
         List<WemoDeviceList> list = new ArrayList<>();
         list.add(item);
         list.add(item2);

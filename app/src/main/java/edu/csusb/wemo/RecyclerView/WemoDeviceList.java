@@ -12,7 +12,7 @@ public class WemoDeviceList {
     public String getWemoDescription() {return wemoDescription;}
     public void setWemoDescription() {this.wemoDescription = wemoDescription;}
     public void setWemoName(){this.wemoName = wemoName;}
-
+    //TODO: the code below should not be needed when the app is complete
     public void setName(String meme) {
         wemoName = meme;
     }
