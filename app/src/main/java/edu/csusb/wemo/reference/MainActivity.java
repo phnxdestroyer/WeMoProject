@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,9 +33,7 @@ import org.fourthline.cling.model.types.ServiceType;
 import org.fourthline.cling.transport.Router;
 import org.fourthline.cling.transport.RouterException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,8 +43,7 @@ import edu.csusb.wemo.model.WemoDevice;
 import edu.csusb.wemo.model.WemoDeviceChangeListener;
 import edu.csusb.wemo.api.client.upnp.WemoRegistryListener;
 import edu.csusb.wemo.service.WemoService;
-import edu.csusb.wemo.ui.RInterface;
-import edu.csusb.wemo.ui.RViewAdapter;
+import edu.csusb.wemo.ui.WemoDeviceClickListener;
 import edu.csusb.wemo.ui.WemoDeviceList;
 
 
@@ -56,7 +51,7 @@ import edu.csusb.wemo.ui.WemoDeviceList;
  * @author Christian Bauer
  */
 // DOC:CLASS
-public class MainActivity extends ListActivity implements WemoDeviceChangeListener, RInterface {
+public class MainActivity extends ListActivity implements WemoDeviceChangeListener, WemoDeviceClickListener {
 
     // DOC:CLASS
     // DOC:SERVICE_BINDING

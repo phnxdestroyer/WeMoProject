@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,11 @@ import edu.csusb.wemo.view.WemoListView;
  * Created by Josiah on 2/24/2017.
  */
 
-public class WemoFragment extends Fragment implements WemoListView{
+public class WemoFragment extends Fragment implements WemoListView, WemoDeviceClickListener{
     WemoListPresenterImpl wemoListPresenter;
+    private android.support.v7.widget.RecyclerView rView;
+    private RViewAdapter rAdapter;
+    private List<WemoDeviceList> wemoDeviceList;
 
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +44,21 @@ public class WemoFragment extends Fragment implements WemoListView{
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         wemoListPresenter.initializeDevices();
+
+        rView = (RecyclerView) view.findViewById(R.id.rview);
+        rView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        WemoDeviceList item = new WemoDeviceList();
+        item.setName("Wemo Device 1");
+        item.setDescription("LampDinningHall");
+        WemoDeviceList item2 = new WemoDeviceList();
+        item2.setName("Wemo Device 2");
+        item2.setDescription("NightLightBedRoom");
+        List<WemoDeviceList> list = new ArrayList<>();
+        list.add(item);
+        list.add(item2);
+        rAdapter = new RViewAdapter(list,getContext(),this);
+        rView.setAdapter(rAdapter);
 
     }
 
@@ -74,5 +93,10 @@ public class WemoFragment extends Fragment implements WemoListView{
     @Override
     public void onPowerStateChange(String powerState) {
 
+    }
+
+    @Override
+    public void onWemoSwitchClick(WemoDeviceList deviceList) {
+        Log.d("bird","up");
     }
 }

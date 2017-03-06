@@ -21,12 +21,12 @@ import edu.csusb.wemo.R;
 public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHolder> {
     private List<WemoDeviceList> wemoDeviceLists;
     private Context mContext;
-    private RInterface rInterface;
+    private WemoDeviceClickListener wemoDeviceClickListener;
 
-    public RViewAdapter(List<WemoDeviceList> wemoDeviceLists, Context mContext, RInterface rInterface) {
+    public RViewAdapter(List<WemoDeviceList> wemoDeviceLists, Context mContext, WemoDeviceClickListener wemoDeviceClickListener) {
         this.wemoDeviceLists = wemoDeviceLists;
         this.mContext = mContext;
-        this.rInterface = rInterface;
+        this.wemoDeviceClickListener = wemoDeviceClickListener;
     }
 
 
@@ -58,14 +58,14 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
                 holder.editDescription.setVisibility(View.VISIBLE);
                 holder.editButtonHide.setVisibility(View.VISIBLE);
 
-                //rInterface.onWemoEditClick(deviceList);
+                //wemoDeviceClickListener.onWemoEditClick(deviceList);
             }
         };
         View.OnClickListener listener = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 //switch on off
-                rInterface.onWemoSwitchClick(deviceList);
+                wemoDeviceClickListener.onWemoSwitchClick(deviceList);
             }
         };
         holder.powerSwitch.setOnClickListener(listener);

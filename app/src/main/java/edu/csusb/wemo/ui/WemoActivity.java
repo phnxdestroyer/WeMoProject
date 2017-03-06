@@ -19,7 +19,7 @@ import edu.csusb.wemo.R;
  * @author Christian Bauer
  */
 // DOC:CLASS
-public class WemoActivity extends AppCompatActivity implements RInterface {
+public class WemoActivity extends AppCompatActivity {
     private android.support.v7.widget.RecyclerView rView;
     private RViewAdapter rAdapter;
     private List<WemoDeviceList> wemoDeviceList;
@@ -29,20 +29,6 @@ public class WemoActivity extends AppCompatActivity implements RInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rView = (RecyclerView) findViewById(R.id.rview);
-        rView.setLayoutManager(new LinearLayoutManager(this));
-
-        WemoDeviceList item = new WemoDeviceList();
-        item.setName("Wemo Device 1");
-        item.setDescription("LampDinningHall");
-        WemoDeviceList item2 = new WemoDeviceList();
-        item2.setName("Wemo Device 2");
-        item2.setDescription("NightLightBedRoom");
-        List<WemoDeviceList> list = new ArrayList<>();
-        list.add(item);
-        list.add(item2);
-        rAdapter = new RViewAdapter(list,this,this);
-        rView.setAdapter(rAdapter);
         // Fix the logging integration between java.util.logging and Android internal logging
         org.seamless.util.logging.LoggingUtil.resetRootHandler(
                 new FixedAndroidLogHandler()
@@ -64,10 +50,6 @@ public class WemoActivity extends AppCompatActivity implements RInterface {
         return false;
     }
 
-    @Override
-    public void onWemoSwitchClick(WemoDeviceList deviceList) {
-        Log.d("bird","up");
-    }
     // DOC:MENU
 
 
