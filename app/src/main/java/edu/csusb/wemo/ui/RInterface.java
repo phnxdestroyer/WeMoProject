@@ -1,4 +1,4 @@
-package edu.csusb.wemo.RecyclerView;
+package edu.csusb.wemo.ui;
 
 /**
  * Created by Luong Randy on 2/28/2017.

@@ -1,8 +1,7 @@
-package edu.csusb.wemo.RecyclerView;
+package edu.csusb.wemo.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.csusb.wemo.R;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Luong Randy on 2/24/2017.
