@@ -105,6 +105,8 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
     @Override
     public void deviceRemoved(Device device) {
         Log.e("WemoList","deviceRemoved");
+
+        wemoListView.deleteDevice(new WemoDevice(device));
     }
 
     @Override

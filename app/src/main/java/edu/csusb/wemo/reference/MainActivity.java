@@ -342,8 +342,8 @@ public class MainActivity extends ListActivity implements WemoDeviceChangeListen
     }
 
     @Override
-    public void onWemoSwitchClick(WemoDeviceList deviceList) {
-        Log.d("bird","up");
+    public void onWemoSwitchClick(WemoDevice device) {
+
     }
     // DOC:CLASS_END
     // ...

@@ -8,7 +8,10 @@ import java.util.Map;
  * Created by Josiah on 2/25/2017.
  */
 
-public class WemoInsightSwitch extends WemoDevice {
+public class WemoInsightSwitch  {
+
+    public WemoDevice wemoDevice;
+    Map<String,String> properties;
     public static String POWER_STATE= "POWER_STATE";
 
     /**
@@ -50,9 +53,11 @@ public class WemoInsightSwitch extends WemoDevice {
 
 
 
-    public WemoInsightSwitch(Device device) {
-        super(device);
 
+
+    public WemoInsightSwitch(WemoDevice wemoDevice){
+        this.wemoDevice = wemoDevice;
+        properties = wemoDevice.properties;
     }
 
     public static void paramsUpdate(Map<String,String> properties, String updateString){
@@ -113,6 +118,10 @@ public class WemoInsightSwitch extends WemoDevice {
     public String getEnergyUsedTotalMilliWattsPerMin() {
 
         return properties.get(WemoInsightSwitch.ENERGY_USED_TOTAL_MW_MIN);
+    }
+
+    public String getSerialNumber(){
+        return wemoDevice.device.getDetails().getSerialNumber();
     }
 
     public WemoInsightProperties getInsightProperties(){

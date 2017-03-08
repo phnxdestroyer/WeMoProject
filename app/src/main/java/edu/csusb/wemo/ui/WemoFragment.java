@@ -2,6 +2,8 @@ package edu.csusb.wemo.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import edu.csusb.wemo.R;
 import edu.csusb.wemo.model.WemoDevice;
+import edu.csusb.wemo.model.WemoInsightSwitch;
 import edu.csusb.wemo.presenter.WemoListPresenterImpl;
 import edu.csusb.wemo.view.WemoListView;
 
@@ -48,15 +51,15 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         rView = (RecyclerView) view.findViewById(R.id.rview);
         rView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        WemoDeviceList item = new WemoDeviceList();
-        item.setName("Wemo Device 1");
-        item.setDescription("LampDinningHall");
-        WemoDeviceList item2 = new WemoDeviceList();
-        item2.setName("Wemo Device 2");
-        item2.setDescription("NightLightBedRoom");
-        List<WemoDeviceList> list = new ArrayList<>();
-        list.add(item);
-        list.add(item2);
+        //WemoDeviceList item = new WemoDeviceList();
+        //item.setName("Wemo Device 1");
+        //item.setDescription("LampDinningHall");
+        //WemoDeviceList item2 = new WemoDeviceList();
+        //item2.setName("Wemo Device 2");
+        //item2.setDescription("NightLightBedRoom");
+        List<WemoDevice> list = new ArrayList<>();
+       // list.add(item);
+       // list.add(item2);
         rAdapter = new RViewAdapter(list,getContext(),this);
         rView.setAdapter(rAdapter);
 
@@ -75,12 +78,17 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
 
     @Override
     public void updateWemoDevice(WemoDevice updateDevice) {
-
+        rAdapter.updateDeviceList(updateDevice);
     }
 
     @Override
-    public void addDeviceToList(WemoDevice wemoDevice) {
-
+    public void addDeviceToList(final WemoDevice wemoDevice) {
+        getContext().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rAdapter.addDevice(wemoDevice);
+            }
+        });
 
     }
 
@@ -96,7 +104,19 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
     }
 
     @Override
-    public void onWemoSwitchClick(WemoDeviceList deviceList) {
+    public void deleteDevice(final WemoDevice device) {
+        getContext().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rAdapter.removeDeviceList(device);
+            }
+        });
+
+    }
+
+    @Override
+    public void onWemoSwitchClick(WemoDevice device) {
         Log.d("bird","up");
+        wemoListPresenter.toggleButtonClick(device);
     }
 }

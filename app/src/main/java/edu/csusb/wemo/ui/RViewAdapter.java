@@ -13,17 +13,19 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.csusb.wemo.R;
+import edu.csusb.wemo.model.WemoDevice;
+import edu.csusb.wemo.model.WemoInsightSwitch;
 
 /**
  * Created by Luong Randy on 2/24/2017.
  */
 
 public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHolder> {
-    private List<WemoDeviceList> wemoDeviceLists;
+    private List<WemoDevice> wemoDeviceLists;
     private Context mContext;
     private WemoDeviceClickListener wemoDeviceClickListener;
 
-    public RViewAdapter(List<WemoDeviceList> wemoDeviceLists, Context mContext, WemoDeviceClickListener wemoDeviceClickListener) {
+    public RViewAdapter(List<WemoDevice> wemoDeviceLists, Context mContext, WemoDeviceClickListener wemoDeviceClickListener) {
         this.wemoDeviceLists = wemoDeviceLists;
         this.mContext = mContext;
         this.wemoDeviceClickListener = wemoDeviceClickListener;
@@ -39,9 +41,10 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, int position) {
-        final WemoDeviceList deviceList = wemoDeviceLists.get(position);
-        holder.descriptionView.setText(deviceList.getWemoDescription());
-        holder.nameView.setText(deviceList.getWemoName());
+        final WemoDevice device = wemoDeviceLists.get(position);
+        final WemoInsightSwitch insignSwitch =  new WemoInsightSwitch(wemoDeviceLists.get(position));
+       // holder.descriptionView.setText(device.getWemoDescription());
+        holder.nameView.setText(insignSwitch.wemoDevice.device.getDisplayString());
         View.OnClickListener buttonHide = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +68,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             @Override
             public void onClick(View v) {
                 //switch on off
-                wemoDeviceClickListener.onWemoSwitchClick(deviceList);
+                wemoDeviceClickListener.onWemoSwitchClick(device);
             }
         };
         holder.powerSwitch.setOnClickListener(listener);
@@ -73,18 +76,35 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         holder.editButtonShow.setOnClickListener(buttonShow);
     }
     //TODO: change to serial number instead of names
-    public void updateDeviceList(WemoDeviceList deviceList){
+    public void updateDeviceList(WemoDevice newDevice){
         for(int i = 0; i < wemoDeviceLists.size();i++){
-            if(wemoDeviceLists.get(i).getWemoName() == deviceList.getWemoName()){
-                wemoDeviceLists.set(i,deviceList);
+            WemoInsightSwitch newSwitch = new WemoInsightSwitch(newDevice);
+            final WemoInsightSwitch device =  new WemoInsightSwitch(wemoDeviceLists.get(i));
+            if(device.getSerialNumber() ==  newSwitch.getSerialNumber()){
+                wemoDeviceLists.set(i,newDevice);
                 notifyItemChanged(i);
             }
         }
     }
 
+    public void removeDeviceList(WemoDevice newDevice){
+        for(int i = 0; i < wemoDeviceLists.size();i++){
+            WemoInsightSwitch newSwitch = new WemoInsightSwitch( newDevice);
+            final WemoInsightSwitch device =  new WemoInsightSwitch(wemoDeviceLists.get(i));
+            if(device.getSerialNumber() ==  newSwitch.getSerialNumber()){
+                wemoDeviceLists.remove(i);
+                notifyItemRemoved(i);
+            }
+        }
+    }
     @Override
     public int getItemCount() {
         return wemoDeviceLists.size();
+    }
+
+    public void addDevice(WemoDevice wemoDevice) {
+        wemoDeviceLists.add(wemoDevice);
+        notifyItemInserted(wemoDeviceLists.size()-1);
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{

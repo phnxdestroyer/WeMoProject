@@ -2,6 +2,8 @@ package edu.csusb.wemo.view;
 
 import android.app.Activity;
 
+import org.fourthline.cling.model.meta.Device;
+
 import edu.csusb.wemo.model.WemoDevice;
 
 /**
@@ -16,4 +18,6 @@ public interface WemoListView {
     Activity getContext();
 
     void onPowerStateChange(String powerState);
+
+    void deleteDevice(WemoDevice device);
 }

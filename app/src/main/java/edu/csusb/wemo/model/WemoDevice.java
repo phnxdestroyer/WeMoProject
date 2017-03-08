@@ -16,4 +16,6 @@ public class WemoDevice  {
     public WemoDevice(Device device) {
         this.device = device;
     }
+
+
 }
