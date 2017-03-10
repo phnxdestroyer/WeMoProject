@@ -2,8 +2,6 @@ package edu.csusb.wemo.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,8 +73,13 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
     }
 
     @Override
-    public void updateWemoDevice(WemoDevice updateDevice) {
-        rAdapter.updateDeviceList(updateDevice);
+    public void updateWemoDevice(final WemoDevice updateDevice) {
+        getContext().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rAdapter.updateDeviceList(updateDevice);
+            }
+        });
     }
 
     @Override
@@ -87,7 +90,6 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
                 rAdapter.addDevice(wemoDevice);
             }
         });
-
     }
 
 
@@ -117,4 +119,10 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         Log.d("bird","up");
         wemoListPresenter.toggleButtonClick(device);
     }
+
+    @Override
+    public void onWemoSubscribe(WemoDevice device) {
+        wemoListPresenter.subscribeToPowerStateAndInsightParams(device);
+    }
+
 }

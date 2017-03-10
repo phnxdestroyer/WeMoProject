@@ -15,7 +15,7 @@ import edu.csusb.wemo.R;
 /**
  * Created by Luong Randy on 3/9/2017.
  */
-
+//TODO: Remove
 public class DeviceParent extends ParentViewHolder{
     public TextView nameView;
     public TextView descriptionView;
@@ -31,6 +31,5 @@ public class DeviceParent extends ParentViewHolder{
         this.powerSwitch = (Switch) itemView.findViewById(R.id.powerswitch);
         this.editButtonShow = (Button) itemView.findViewById(R.id.editbuttonshow);
         this.editButtonHide = (Button) itemView.findViewById(R.id.editbuttonhide);
-        this.editDescription = (EditText) itemView.findViewById(R.id.editdescription);
     }
 }

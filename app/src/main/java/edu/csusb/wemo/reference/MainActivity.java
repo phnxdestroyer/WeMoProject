@@ -50,7 +50,7 @@ import edu.csusb.wemo.ui.WemoDeviceClickListener;
  * @author Christian Bauer
  */
 // DOC:CLASS
-public class MainActivity extends ListActivity implements WemoDeviceChangeListener, WemoDeviceClickListener {
+public class MainActivity extends ListActivity implements WemoDeviceChangeListener {
 
     // DOC:CLASS
     // DOC:SERVICE_BINDING
@@ -340,10 +340,6 @@ public class MainActivity extends ListActivity implements WemoDeviceChangeListen
         //TODO: something here.
     }
 
-    @Override
-    public void onWemoSwitchClick(WemoDevice device) {
-
-    }
     // DOC:CLASS_END
     // ...
 }

@@ -13,7 +13,7 @@ import edu.csusb.wemo.R;
 /**
  * Created by Luong Randy on 3/9/2017.
  */
-
+//TODO: Remove
 public class DeviceChild extends ChildViewHolder{
     public TextView wemoAvgPower;
     public TextView wemoCurrentPower;

@@ -60,8 +60,9 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
      */
     @Override
     public void deviceAdded(Device device) {
-        Log.e("WemoList","deviceAdded");
+
         if(device.isFullyHydrated()){
+            Log.e("WemoListPresenter","deviceAdded");
             for(Service service:device.getServices()) {
                 //String s = service.getServiceType().toFriendlyString();
                 Log.i("WemoList", "      "+service.getServiceType().toFriendlyString()+"|"+service.getServiceId());
@@ -75,7 +76,7 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
            // toggleButtonClick(new WemoDeviceDisplay(null,device));
 
             WemoDevice wemoDevice = new WemoDevice(device);
-            wemoServiceInteractor.subscribeInsightParams(wemoDevice);
+         //   wemoServiceInteractor.subscribeInsightParams(wemoDevice);
            // toggleButtonClick(wemoDevice);
             wemoListView.addDeviceToList(wemoDevice);
         }

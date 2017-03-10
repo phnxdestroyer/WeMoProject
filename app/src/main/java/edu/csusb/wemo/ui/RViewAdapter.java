@@ -1,7 +1,9 @@
 package edu.csusb.wemo.ui;
 
 import android.content.Context;
+import android.support.v7.view.menu.ExpandedMenuView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.silencedut.expandablelayout.ExpandableLayout;
 
 import java.util.List;
 
@@ -34,13 +38,15 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.wemo_device_list,null);
+        Log.e("RViewAdapter","onCreateViewHolder");
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.wemo_device_options,null);
         CustomViewHolder viewHolder = new CustomViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, int position) {
+        Log.e("RViewAdapter","onBindViewHolder");
         final WemoDevice device = wemoDeviceLists.get(position);
         final WemoInsightSwitch insignSwitch =  new WemoInsightSwitch(wemoDeviceLists.get(position));
        // holder.descriptionView.setText(device.getWemoDescription());
@@ -48,18 +54,18 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         View.OnClickListener buttonHide = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("RViewAdapter","buttonHide");
                 holder.editButtonHide.setVisibility(View.GONE);
-                holder.editDescription.setVisibility(View.GONE);
-                if(holder.editDescription.getText().length()>0){
-                    holder.descriptionView.setText(holder.editDescription.getText());
-                }
+
             }
         };
         View.OnClickListener buttonShow = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.editDescription.setVisibility(View.VISIBLE);
+                Log.e("RViewAdapter","buttonShow");
                 holder.editButtonHide.setVisibility(View.VISIBLE);
+                holder.expandableLayout.setExpand(true);
+                wemoDeviceClickListener.onWemoSubscribe(device);
 
                 //wemoDeviceClickListener.onWemoEditClick(deviceList);
             }
@@ -68,18 +74,23 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             @Override
             public void onClick(View v) {
                 //switch on off
+                Log.e("RViewAdapter","switch");
+                //holder.editDescription.setText(insignSwitch.getPowerState());
                 wemoDeviceClickListener.onWemoSwitchClick(device);
             }
         };
         holder.powerSwitch.setOnClickListener(listener);
         holder.editButtonHide.setOnClickListener(buttonHide);
         holder.editButtonShow.setOnClickListener(buttonShow);
+        holder.updateDescription(insignSwitch.getAveragepowerWatts());
     }
     public void updateDeviceList(WemoDevice newDevice){
+        Log.e("RViewAdapter","updateDeviceList");
         for(int i = 0; i < wemoDeviceLists.size();i++){
             WemoInsightSwitch newSwitch = new WemoInsightSwitch(newDevice);
             final WemoInsightSwitch device =  new WemoInsightSwitch(wemoDeviceLists.get(i));
             if(device.getSerialNumber() ==  newSwitch.getSerialNumber()){
+                Log.e("RViewAdapter","      "+i);
                 wemoDeviceLists.set(i,newDevice);
                 notifyItemChanged(i);
             }
@@ -112,7 +123,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         protected Switch powerSwitch;
         protected Button editButtonShow;
         protected Button editButtonHide;
-        protected EditText editDescription;
+        public ExpandableLayout expandableLayout;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
@@ -121,7 +132,13 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             this.powerSwitch = (Switch) itemView.findViewById(R.id.powerswitch);
             this.editButtonShow = (Button) itemView.findViewById(R.id.editbuttonshow);
             this.editButtonHide = (Button) itemView.findViewById(R.id.editbuttonhide);
-            this.editDescription = (EditText) itemView.findViewById(R.id.editdescription);
+            this.expandableLayout = (ExpandableLayout) itemView.findViewById(R.id.expanable);
+        }
+
+        public void updateDescription(String description){
+            if(description!=null) {
+                descriptionView.setText(description);
+            }
         }
     }
 }

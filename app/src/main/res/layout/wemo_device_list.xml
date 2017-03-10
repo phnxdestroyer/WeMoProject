@@ -48,16 +48,6 @@
         android:visibility="gone"
         android:layout_alignParentRight="true"/>
 
-    <EditText
-        android:id="@+id/editdescription"
-        android:background="@color/wemogreenlite"
-        android:visibility="gone"
-        android:maxLines="1"
-        android:maxLength="20"
-        android:textSize="16dp"
-        android:layout_below="@id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>
