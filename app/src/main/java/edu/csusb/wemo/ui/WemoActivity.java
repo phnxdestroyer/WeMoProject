@@ -20,9 +20,6 @@ import edu.csusb.wemo.R;
  */
 // DOC:CLASS
 public class WemoActivity extends AppCompatActivity {
-    private android.support.v7.widget.RecyclerView rView;
-    private RViewAdapter rAdapter;
-    private List<WemoDeviceList> wemoDeviceList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

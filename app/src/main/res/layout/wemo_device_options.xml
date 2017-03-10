@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/wemocurrentpower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="currentpower"/>
+
+    <TextView
+        android:id="@+id/wemoaveragepower"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="avgpower"/>
+
+    <TextView
+        android:id="@+id/wemotimelaston"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="laston"/>
+
+    <TextView
+        android:id="@+id/wemotimeonduration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="durationon"/>
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/graph" />
+
+</RelativeLayout>

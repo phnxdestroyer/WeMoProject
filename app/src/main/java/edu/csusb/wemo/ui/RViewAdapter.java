@@ -75,7 +75,6 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         holder.editButtonHide.setOnClickListener(buttonHide);
         holder.editButtonShow.setOnClickListener(buttonShow);
     }
-    //TODO: change to serial number instead of names
     public void updateDeviceList(WemoDevice newDevice){
         for(int i = 0; i < wemoDeviceLists.size();i++){
             WemoInsightSwitch newSwitch = new WemoInsightSwitch(newDevice);

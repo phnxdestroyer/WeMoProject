@@ -44,7 +44,6 @@ import edu.csusb.wemo.model.WemoDeviceChangeListener;
 import edu.csusb.wemo.api.client.upnp.WemoRegistryListener;
 import edu.csusb.wemo.service.WemoService;
 import edu.csusb.wemo.ui.WemoDeviceClickListener;
-import edu.csusb.wemo.ui.WemoDeviceList;
 
 
 /**

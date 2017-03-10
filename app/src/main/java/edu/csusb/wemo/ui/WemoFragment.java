@@ -30,8 +30,6 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
     WemoListPresenterImpl wemoListPresenter;
     private android.support.v7.widget.RecyclerView rView;
     private RViewAdapter rAdapter;
-    private List<WemoDeviceList> wemoDeviceList;
-
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
