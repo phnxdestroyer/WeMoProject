@@ -83,6 +83,10 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         holder.editButtonHide.setOnClickListener(buttonHide);
         holder.editButtonShow.setOnClickListener(buttonShow);
         holder.updateDescription(insignSwitch.getAveragepowerWatts());
+        holder.updateAveragePower(insignSwitch.getAveragepowerWatts());
+        holder.updateCurrentPower(insignSwitch.getPowerState());
+        holder.updateTimeLastOn(insignSwitch.getLastToggleTimestamp());
+        holder.updateTimeOnDuration(insignSwitch.getOnNowForSeconds());
     }
     public void updateDeviceList(WemoDevice newDevice){
         Log.e("RViewAdapter","updateDeviceList");
@@ -118,15 +122,23 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
-        protected TextView nameView;
-        protected TextView descriptionView;
-        protected Switch powerSwitch;
-        protected Button editButtonShow;
-        protected Button editButtonHide;
+        public TextView nameView;
+        public TextView descriptionView;
+        public Switch powerSwitch;
+        public Button editButtonShow;
+        public Button editButtonHide;
         public ExpandableLayout expandableLayout;
+        public TextView wemoTimeOnDuration;
+        public TextView wemoAveragePower;
+        public TextView wemoCurrentPower;
+        public TextView wemoTimeLastOn;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
+            this.wemoAveragePower = (TextView) itemView.findViewById(R.id.wemoaveragepower);
+            this.wemoTimeOnDuration = (TextView) itemView.findViewById(R.id.wemotimeonduration);
+            this.wemoCurrentPower = (TextView) itemView.findViewById(R.id.wemocurrentpower);
+            this.wemoTimeLastOn = (TextView) itemView.findViewById(R.id.wemotimelaston);
             this.nameView = (TextView) itemView.findViewById(R.id.name);
             this.descriptionView = (TextView) itemView.findViewById(R.id.description);
             this.powerSwitch = (Switch) itemView.findViewById(R.id.powerswitch);
@@ -138,6 +150,28 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         public void updateDescription(String description){
             if(description!=null) {
                 descriptionView.setText(description);
+            }
+        }
+
+        public void updateAveragePower(String averagePower){
+            if(averagePower!=null) {
+                wemoAveragePower.setText("Average Power: " + averagePower);
+            }
+        }
+
+        public void updateTimeOnDuration(String timeOnDuration){
+            if(timeOnDuration!=null) {
+                wemoTimeOnDuration.setText("Time On: " + timeOnDuration);
+            }
+        }
+        public void updateCurrentPower(String currentPower){
+            if(currentPower!=null) {
+                wemoCurrentPower.setText("Current Power: " + currentPower);
+            }
+        }
+        public void updateTimeLastOn(String timeLastOn){
+            if(timeLastOn!=null) {
+                wemoTimeLastOn.setText("Last on: " + timeLastOn);
             }
         }
     }
