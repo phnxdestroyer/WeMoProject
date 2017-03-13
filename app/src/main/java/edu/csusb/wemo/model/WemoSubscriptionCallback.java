@@ -51,7 +51,7 @@ public abstract class WemoSubscriptionCallback extends SubscriptionCallback {
 
     @Override
     protected void established(GENASubscription subscription) {
-        Log.e("WemoSubscription","Device {"+ this.deviceId+"} subscription {"+ this.subscriptionId+"}");
+        Log.e("WemoSubscription","Device {"+ this.deviceId+"} subscription {"+ this.subscriptionId+"} established");
 
     }
 
