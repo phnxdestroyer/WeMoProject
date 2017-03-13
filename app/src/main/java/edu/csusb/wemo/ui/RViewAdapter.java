@@ -1,6 +1,8 @@
 package edu.csusb.wemo.ui;
 
 import android.content.Context;
+import android.os.PowerManager;
+import android.provider.ContactsContract;
 import android.support.v7.view.menu.ExpandedMenuView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,9 +14,14 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.silencedut.expandablelayout.ExpandableLayout;
 
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import edu.csusb.wemo.R;
 import edu.csusb.wemo.model.WemoDevice;
@@ -56,6 +63,8 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             public void onClick(View v) {
                 Log.e("RViewAdapter","buttonHide");
                 holder.editButtonHide.setVisibility(View.GONE);
+                holder.expandableLayout.setExpand(false);
+
 
             }
         };
@@ -75,18 +84,26 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             public void onClick(View v) {
                 //switch on off
                 Log.e("RViewAdapter","switch");
+
                 //holder.editDescription.setText(insignSwitch.getPowerState());
                 wemoDeviceClickListener.onWemoSwitchClick(device);
             }
         };
+//TODO: this doesn't work
+        if(insignSwitch.getPowerState() != "0"){
+            holder.powerSwitch.setChecked(true);
+        } else {
+            holder.powerSwitch.setChecked(false);
+        }
         holder.powerSwitch.setOnClickListener(listener);
         holder.editButtonHide.setOnClickListener(buttonHide);
         holder.editButtonShow.setOnClickListener(buttonShow);
         holder.updateDescription(insignSwitch.getAveragepowerWatts());
         holder.updateAveragePower(insignSwitch.getAveragepowerWatts());
-        holder.updateCurrentPower(insignSwitch.getPowerState());
+        holder.updateCurrentPower(insignSwitch.getInstantPowerMilliWatts());
         holder.updateTimeLastOn(insignSwitch.getLastToggleTimestamp());
         holder.updateTimeOnDuration(insignSwitch.getOnNowForSeconds());
+        holder.updateGraph(insignSwitch.getOnNowForSeconds(),insignSwitch.getInstantPowerMilliWatts());
     }
     public void updateDeviceList(WemoDevice newDevice){
         Log.e("RViewAdapter","updateDeviceList");
@@ -131,6 +148,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         public TextView wemoTimeOnDuration;
         public TextView wemoAveragePower;
         public TextView wemoCurrentPower;
+        public GraphView graphView;
         public TextView wemoTimeLastOn;
 
         public CustomViewHolder(View itemView) {
@@ -145,6 +163,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             this.editButtonShow = (Button) itemView.findViewById(R.id.editbuttonshow);
             this.editButtonHide = (Button) itemView.findViewById(R.id.editbuttonhide);
             this.expandableLayout = (ExpandableLayout) itemView.findViewById(R.id.expanable);
+            this.graphView = (GraphView) itemView.findViewById(R.id.graph);
         }
 
         public void updateDescription(String description){
@@ -152,21 +171,59 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
                 descriptionView.setText(description);
             }
         }
+//TODO: get graph logic working and make seperate views for the getters
+        //TODO: error check that double
+        public void updateGraph(String onNowForSeconds, String powerState) {
+            if (onNowForSeconds != null && powerState != null) {
+                double seconds = Double.valueOf(onNowForSeconds);
+                double power = Double.valueOf(powerState);
+                DataPoint[] feedData = new DataPoint[0];
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(feedData);
+                series.appendData(new DataPoint(seconds,power),true,10,false);
+                graphView.getViewport().setXAxisBoundsManual(true);
+                graphView.getViewport().setMinX(0);
+                graphView.getViewport().setMaxX(10);
+                if(seconds > 10){
+                    graphView.getViewport().setMinX(seconds-10);
+                    graphView.getViewport().setMaxX(seconds);
+                }
+                graphView.getViewport().setYAxisBoundsManual(true);
+                graphView.getViewport().setMinY(power - 3000);
+                graphView.getViewport().setMaxY(power + 3000);
+                graphView.addSeries(series);
+            }
+        }
+
 
         public void updateAveragePower(String averagePower){
             if(averagePower!=null) {
-                wemoAveragePower.setText("Average Power: " + averagePower);
+                wemoAveragePower.setText("Average Power: " + averagePower + " W");
             }
         }
 
         public void updateTimeOnDuration(String timeOnDuration){
             if(timeOnDuration!=null) {
-                wemoTimeOnDuration.setText("Time On: " + timeOnDuration);
+                int timeInt = Integer.valueOf(timeOnDuration);
+                int timeMin = timeInt/60;
+                int timeHour = timeInt/3600;
+                int timeDay = timeInt/86400;
+                wemoTimeOnDuration.setText("Time On: " + timeInt + " sec");
+                if(timeInt > 60){
+                    wemoTimeOnDuration.setText("Time On: " + timeMin + " min");
+                } else if(timeInt > 3600){
+                    wemoTimeOnDuration.setText("Time On: " + timeHour + " hrs " + timeMin + " min");
+                } else if(timeInt > 86400){
+                    wemoTimeOnDuration.setText("Time On: " + timeDay + " days " + timeHour + " hrs");
+                }
+
             }
         }
         public void updateCurrentPower(String currentPower){
-            if(currentPower!=null) {
-                wemoCurrentPower.setText("Current Power: " + currentPower);
+            if(currentPower != null) {
+                double power = Double.valueOf(currentPower) / 1000;
+                if (currentPower != null) {
+                    wemoCurrentPower.setText("Current Power: " + power + " W");
+                }
             }
         }
         public void updateTimeLastOn(String timeLastOn){
