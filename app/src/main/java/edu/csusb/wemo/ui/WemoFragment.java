@@ -2,12 +2,15 @@ package edu.csusb.wemo.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,7 +26,7 @@ import edu.csusb.wemo.view.WemoListView;
  * Created by Josiah on 2/24/2017.
  */
 
-public class WemoFragment extends Fragment implements WemoListView, WemoDeviceClickListener{
+public class WemoFragment extends Fragment implements WemoListView, WemoDeviceClickListener, Toolbar.OnMenuItemClickListener {
     WemoListPresenterImpl wemoListPresenter;
     private android.support.v7.widget.RecyclerView rView;
     private RViewAdapter rAdapter;
@@ -45,6 +48,10 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
 
         rView = (RecyclerView) view.findViewById(R.id.rview);
         rView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.frag_tb);
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setOnMenuItemClickListener(this);
+        toolbar.setTitle(R.string.app_name);
 
         //WemoDeviceList item = new WemoDeviceList();
         //item.setName("Wemo Device 1");
@@ -68,9 +75,10 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         super.onDestroy();
     }
 
+    //Refresh the List
     @Override
     public void refreshList() {
-
+        wemoListPresenter.refreshList();
     }
 
     @Override
@@ -131,4 +139,17 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         return wemoListPresenter.getPowerStatus(device);
     }
 
+    //ToolBar Selections
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                refreshList();
+                return true;
+            case R.id.menu_about:
+                startActivity(new Intent(getActivity(),AboutActivity.class));
+                return true;
+        }
+        return false;
+    }
 }

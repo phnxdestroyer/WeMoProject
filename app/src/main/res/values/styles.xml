@@ -9,11 +9,26 @@
         <item name="colorPrimaryDark">@color/wemogreendark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">>
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/wemogreenlite</item>
+        <item name="colorPrimaryDark">@color/wemogreendark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
     <style name="AppThemeDemo" parent="android:Theme.Holo">>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Full" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/wemogreenlite</item>
+        <item name="colorPrimaryDark">@color/wemogreendark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 

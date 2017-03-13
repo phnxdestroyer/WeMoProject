@@ -1,15 +1,9 @@
 <resources>
-    <string name="app_name">WeMo</string>
+    <string name="app_name">WeNo</string>
 
     <string name="deviceDetailsNotYetAvailable">Device details are being discovered, please wait.</string>
 
     <string name="deviceDetailsNotYetAvailable2">Device details are being discovered, please wait.</string>
-
-
-
-
-
-
 
     <string name="deviceDetails">Device Details</string>
 
@@ -24,5 +18,15 @@
     <string name="errorSwitchingRouter">Error switching router: </string>
     <string name="enablingDebugLogging">Enabling debug logging…</string>
     <string name="disablingDebugLogging">Disabling debug logging…</string>
+
+    //Main Activity Strings
+    <string name="refresh_main_menu">Refresh</string>
+    <string name="about_main_menu">About</string>
+
+    //About Activity Strings
+    <string name="home_about_menu">Home</string>
+    <string name="about_text">This app searches for smart devices and attempts to connect with them. Once connected, the app will then send and receive information between the app and the device. Using the app, the user should then be able to perform functions such as turning the device off/on and monitoring power usage to name a couple. More functions are available for the user.
+        ~Created by Randy Luong, Josiah Moreno, and Nicholas Murray</string>
+
 
 </resources>

@@ -104,6 +104,11 @@ public class WemoListPresenterImpl implements WemoListPresenter, WemoDeviceChang
     }
 
     @Override
+    public void refreshList() {
+        wemoServiceInteractor.searchForWemo();
+    }
+
+    @Override
     public void deviceRemoved(Device device) {
         Log.e("WemoList","deviceRemoved");
 
