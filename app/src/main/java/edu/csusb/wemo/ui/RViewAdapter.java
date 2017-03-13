@@ -19,7 +19,9 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.silencedut.expandablelayout.ExpandableLayout;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -36,8 +38,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
     private List<WemoDevice> wemoDeviceLists;
     private Context mContext;
     private WemoDeviceClickListener wemoDeviceClickListener;
-    private LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
-
+    private Map<WemoDevice,LineGraphSeries<DataPoint>> graphs = new HashMap<>();
 
     public RViewAdapter(List<WemoDevice> wemoDeviceLists, Context mContext, WemoDeviceClickListener wemoDeviceClickListener) {
         this.wemoDeviceLists = wemoDeviceLists;
@@ -59,8 +60,19 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         Log.e("RViewAdapter","onBindViewHolder");
         final WemoDevice device = wemoDeviceLists.get(position);
         final WemoInsightSwitch insignSwitch =  new WemoInsightSwitch(device);
-       // holder.descriptionView.setText(device.getWemoDescription());
+        // holder.descriptionView.setText(device.getWemoDescription());
         holder.nameView.setText(insignSwitch.wemoDevice.device.getDisplayString());
+
+        if(graphs.containsKey(device)){
+            DataPoint v = new DataPoint(Double.valueOf(insignSwitch.getOnTotal()),Double.valueOf(insignSwitch.getInstantPowerMilliWatts()));
+            //DataPoint t = new DataPoint(Double.valueOf(insignSwitch.getOnTotal()),Double.valueOf(insignSwitch.getInstantPowerMilliWatts()));
+            graphs.get(device).appendData(v,true,10);
+
+        } else {
+            graphs.put(device,new LineGraphSeries<DataPoint>());
+            holder.addGraph(insignSwitch.getEnergyUsedTodayMilliWattsPerMin(),insignSwitch.getOnNowForSeconds(),graphs.get(device));
+        }
+
         View.OnClickListener buttonHide = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +119,8 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         holder.updateCurrentPower(insignSwitch.getInstantPowerMilliWatts());
         holder.updateTimeLastOn(insignSwitch.getLastToggleTimestamp());
         holder.updateTimeOnDuration(insignSwitch.getOnNowForSeconds());
-        holder.updateGraph(insignSwitch.getOnNowForSeconds(),insignSwitch.getInstantPowerMilliWatts(),series);
+        holder.addGraph(insignSwitch.getOnNowForSeconds(),insignSwitch.getInstantPowerMilliWatts(),graphs.get(device));
+        //holder.updateGraph(insignSwitch.getOnNowForSeconds(),insignSwitch.getInstantPowerMilliWatts(),series);
     }
     public void updateDeviceList(WemoDevice newDevice){
         Log.e("RViewAdapter","updateDeviceList");
@@ -175,12 +188,35 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
                 descriptionView.setText(description);
             }
         }
-//TODO: get graph logic working and make seperate views for the getters
+        public void addGraph(String onNowForSeconds, String powerState, LineGraphSeries<DataPoint> newSeries){
+                if (onNowForSeconds != null && powerState != null) {
+                    Log.d("snailss","up");
+                    double seconds = Double.valueOf(onNowForSeconds);
+                    double power = Double.valueOf(powerState);
+                    //newSeries.appendData(new DataPoint(seconds,power),true,10);
+                    graphView.getViewport().setXAxisBoundsManual(true);
+                    graphView.removeAllSeries();// joe added
+                    graphView.addSeries(newSeries);
+                    graphView.getViewport().setMinX(0);
+                    graphView.getViewport().setMaxX(10);
+                    if(seconds > 10){
+                        graphView.getViewport().setMinX(seconds-10);
+                        graphView.getViewport().setMaxX(seconds);
+                    }
+                    graphView.getViewport().setYAxisBoundsManual(true);
+                    graphView.getViewport().setMinY(power - 5000);
+                    graphView.getViewport().setMaxY(power + 5000);
+                }
+            }
+
+
         public void updateGraph(String onNowForSeconds, String powerState, LineGraphSeries<DataPoint> series) {
             if (onNowForSeconds != null && powerState != null) {
                 double seconds = Double.valueOf(onNowForSeconds);
                 double power = Double.valueOf(powerState);
                 series.appendData(new DataPoint(seconds,power),true,10);
+
+                //series.appendData(new DataPoint(seconds+2,power),true,10);
                 graphView.addSeries(series);
                 graphView.getViewport().setXAxisBoundsManual(true);
                 graphView.getViewport().setMinX(0);
@@ -194,25 +230,6 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
                 graphView.getViewport().setMaxY(power + 5000);
             }
         }
-//TODO if it looks good it is good
-        public DataPoint[] feedData(double seconds, double power){
-            DataPoint[] data = new DataPoint[10];
-            for(int i=0;i<10;i++){
-                if(data[i] == null){
-                    data[i]=new DataPoint(0,0);
-                }
-            }
-            DataPoint v = new DataPoint(seconds,power);
-            for(int i=0;i<10;i++){
-                if(data[i] == new DataPoint(0,0)){
-                    data[i]=v;
-                    return data;
-                }
-            }
-            return data;
-        }
-
-
         public void updateAveragePower(String averagePower){
             if(averagePower!=null) {
                 wemoAveragePower.setText("Average Power: " + averagePower + " W");
@@ -249,5 +266,8 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
                 wemoTimeLastOn.setText("Last on: " + timeLastOn);
             }
         }
+
+
+
     }
 }

@@ -18,21 +18,21 @@
             android:id="@+id/wemocurrentpower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="currentpower"
+            android:text="Current Power: "
             android:layout_alignParentLeft="true"/>
 
         <TextView
             android:id="@+id/wemoaveragepower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="avgpower"
+            android:text="Average Power: "
             android:layout_alignParentRight="true"/>
 
         <TextView
             android:id="@+id/wemotimelaston"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="laston"
+            android:text="Last on: "
             android:layout_alignParentLeft="true"
             android:layout_below="@id/wemocurrentpower"/>
 
@@ -40,7 +40,7 @@
             android:id="@+id/wemotimeonduration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="durationon"
+            android:text="Time On: "
             android:layout_below="@id/wemoaveragepower"
             android:layout_alignParentRight="true"/>
 
