@@ -4,6 +4,7 @@
 .idea/
 .gradle
 .idea
+.idea/modules.xml
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
