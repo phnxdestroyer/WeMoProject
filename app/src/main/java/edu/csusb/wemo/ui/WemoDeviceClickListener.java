@@ -11,4 +11,6 @@ public interface WemoDeviceClickListener {
     void onWemoSwitchClick(WemoDevice device);
 
     void onWemoSubscribe(WemoDevice device);
+
+    String wemoPowerStatus(WemoDevice device);
 }

@@ -126,4 +126,9 @@ public class WemoFragment extends Fragment implements WemoListView, WemoDeviceCl
         wemoListPresenter.subscribeToPowerStateAndInsightParams(device);
     }
 
+    @Override
+    public String wemoPowerStatus(WemoDevice device) {
+        return wemoListPresenter.getPowerStatus(device);
+    }
+
 }

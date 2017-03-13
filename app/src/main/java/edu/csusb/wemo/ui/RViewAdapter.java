@@ -26,6 +26,7 @@ import java.util.Queue;
 import edu.csusb.wemo.R;
 import edu.csusb.wemo.model.WemoDevice;
 import edu.csusb.wemo.model.WemoInsightSwitch;
+import edu.csusb.wemo.presenter.WemoListPresenterImpl;
 
 /**
  * Created by Luong Randy on 2/24/2017.
@@ -35,6 +36,8 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
     private List<WemoDevice> wemoDeviceLists;
     private Context mContext;
     private WemoDeviceClickListener wemoDeviceClickListener;
+    private LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+
 
     public RViewAdapter(List<WemoDevice> wemoDeviceLists, Context mContext, WemoDeviceClickListener wemoDeviceClickListener) {
         this.wemoDeviceLists = wemoDeviceLists;
@@ -55,7 +58,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
     public void onBindViewHolder(final CustomViewHolder holder, int position) {
         Log.e("RViewAdapter","onBindViewHolder");
         final WemoDevice device = wemoDeviceLists.get(position);
-        final WemoInsightSwitch insignSwitch =  new WemoInsightSwitch(wemoDeviceLists.get(position));
+        final WemoInsightSwitch insignSwitch =  new WemoInsightSwitch(device);
        // holder.descriptionView.setText(device.getWemoDescription());
         holder.nameView.setText(insignSwitch.wemoDevice.device.getDisplayString());
         View.OnClickListener buttonHide = new View.OnClickListener() {
@@ -89,12 +92,13 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
                 wemoDeviceClickListener.onWemoSwitchClick(device);
             }
         };
-//TODO: this doesn't work
-        if(insignSwitch.getPowerState() != "0"){
-            holder.powerSwitch.setChecked(true);
-        } else {
+
+        if (wemoDeviceClickListener.wemoPowerStatus(device).contains("0")) {
             holder.powerSwitch.setChecked(false);
+        } else {
+            holder.powerSwitch.setChecked(true);
         }
+
         holder.powerSwitch.setOnClickListener(listener);
         holder.editButtonHide.setOnClickListener(buttonHide);
         holder.editButtonShow.setOnClickListener(buttonShow);
@@ -103,7 +107,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         holder.updateCurrentPower(insignSwitch.getInstantPowerMilliWatts());
         holder.updateTimeLastOn(insignSwitch.getLastToggleTimestamp());
         holder.updateTimeOnDuration(insignSwitch.getOnNowForSeconds());
-        holder.updateGraph(insignSwitch.getOnNowForSeconds(),insignSwitch.getInstantPowerMilliWatts());
+        holder.updateGraph(insignSwitch.getOnNowForSeconds(),insignSwitch.getInstantPowerMilliWatts(),series);
     }
     public void updateDeviceList(WemoDevice newDevice){
         Log.e("RViewAdapter","updateDeviceList");
@@ -172,14 +176,12 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             }
         }
 //TODO: get graph logic working and make seperate views for the getters
-        //TODO: error check that double
-        public void updateGraph(String onNowForSeconds, String powerState) {
+        public void updateGraph(String onNowForSeconds, String powerState, LineGraphSeries<DataPoint> series) {
             if (onNowForSeconds != null && powerState != null) {
                 double seconds = Double.valueOf(onNowForSeconds);
                 double power = Double.valueOf(powerState);
-                DataPoint[] feedData = new DataPoint[0];
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(feedData);
-                series.appendData(new DataPoint(seconds,power),true,10,false);
+                series.appendData(new DataPoint(seconds,power),true,10);
+                graphView.addSeries(series);
                 graphView.getViewport().setXAxisBoundsManual(true);
                 graphView.getViewport().setMinX(0);
                 graphView.getViewport().setMaxX(10);
@@ -188,10 +190,26 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
                     graphView.getViewport().setMaxX(seconds);
                 }
                 graphView.getViewport().setYAxisBoundsManual(true);
-                graphView.getViewport().setMinY(power - 3000);
-                graphView.getViewport().setMaxY(power + 3000);
-                graphView.addSeries(series);
+                graphView.getViewport().setMinY(power - 5000);
+                graphView.getViewport().setMaxY(power + 5000);
             }
+        }
+//TODO if it looks good it is good
+        public DataPoint[] feedData(double seconds, double power){
+            DataPoint[] data = new DataPoint[10];
+            for(int i=0;i<10;i++){
+                if(data[i] == null){
+                    data[i]=new DataPoint(0,0);
+                }
+            }
+            DataPoint v = new DataPoint(seconds,power);
+            for(int i=0;i<10;i++){
+                if(data[i] == new DataPoint(0,0)){
+                    data[i]=v;
+                    return data;
+                }
+            }
+            return data;
         }
 
 
