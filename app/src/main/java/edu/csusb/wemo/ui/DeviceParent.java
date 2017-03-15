@@ -27,7 +27,7 @@ public class DeviceParent extends ParentViewHolder{
     public DeviceParent(View itemView) {
         super(itemView);
         this.nameView = (TextView) itemView.findViewById(R.id.name);
-        this.descriptionView = (TextView) itemView.findViewById(R.id.description);
+        //this.descriptionView = (TextView) itemView.findViewById(R.id.description);
         this.powerSwitch = (Switch) itemView.findViewById(R.id.powerswitch);
         this.editButtonShow = (Button) itemView.findViewById(R.id.editbuttonshow);
         this.editButtonHide = (Button) itemView.findViewById(R.id.editbuttonhide);

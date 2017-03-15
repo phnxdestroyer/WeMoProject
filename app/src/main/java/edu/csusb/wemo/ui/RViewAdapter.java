@@ -1,6 +1,7 @@
 package edu.csusb.wemo.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +16,12 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.silencedut.expandablelayout.ExpandableLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import edu.csusb.wemo.R;
 import edu.csusb.wemo.model.WemoDevice;
@@ -154,7 +158,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
         public TextView nameView;
-        public TextView descriptionView;
+        //public TextView descriptionView;
         public Switch powerSwitch;
         public Button editButtonShow;
         public Button editButtonHide;
@@ -173,7 +177,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             this.wemoCurrentPower = (TextView) itemView.findViewById(R.id.wemocurrentpower);
             this.wemoTimeLastOn = (TextView) itemView.findViewById(R.id.wemotimelaston);
             this.nameView = (TextView) itemView.findViewById(R.id.name);
-            this.descriptionView = (TextView) itemView.findViewById(R.id.description);
+            //this.descriptionView = (TextView) itemView.findViewById(R.id.description);
             this.powerSwitch = (Switch) itemView.findViewById(R.id.powerswitch);
             this.editButtonShow = (Button) itemView.findViewById(R.id.editbuttonshow);
             this.editButtonHide = (Button) itemView.findViewById(R.id.editbuttonhide);
@@ -183,7 +187,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
 
         public void updateDescription(String description){
             if(description!=null) {
-                descriptionView.setText(description);
+                //descriptionView.setText(description);
             }
         }
         public void addGraph(String onNowForSeconds, String powerState, LineGraphSeries<DataPoint> newSeries) {
@@ -267,7 +271,37 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
         }
         public void updateTimeLastOn(String timeLastOn){
             if(timeLastOn!=null) {
-                wemoTimeLastOn.setText("Last on: " + timeLastOn);
+                long unixSeconds = Long.valueOf(timeLastOn);
+                Date stampDate = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
+                Date currentDate = new Date();
+                currentDate.getTime();
+                SimpleDateFormat ymd = new SimpleDateFormat("MM-dd-yyyy"); // the format of your date
+                SimpleDateFormat hours = new SimpleDateFormat("HH");
+                SimpleDateFormat minutes = new SimpleDateFormat("mm");
+                SimpleDateFormat seconds = new SimpleDateFormat("ss");
+
+                //ymd.setTimeZone(TimeZone.getTimeZone("GMT-7"));
+                //hms.setTimeZone(TimeZone.getTimeZone("GMT-7"));// give a timezone reference for formating (see comment at the bottom
+                //String formattedDate = sdf.format(date);
+                String currentFormatedDate = ymd.format(currentDate);
+                String stampFormatedDate = ymd.format(stampDate);
+                Log.d("TimeStamp","YMD");
+                Log.d("StampFormated",stampFormatedDate);
+                Log.d("CurrentFormated",currentFormatedDate);
+                if(stampFormatedDate.contains(currentFormatedDate)){
+                    String sFDminutes = minutes.format(stampDate);
+                    String sFD = hours.format(stampDate);
+                    if(Integer.valueOf(sFD)!= null && Integer.valueOf(sFD) > 12){
+                        int pm = Integer.valueOf(sFD) % 12;
+                        wemoTimeLastOn.setText("Last On: " + pm + ":" +sFDminutes+" PM");
+                        wemoTimeLastOn.setText("Last On: " + stampFormatedDate);
+
+                    } else {
+                        wemoTimeLastOn.setText("Last On: " + sFD + " AM");
+                    }
+                } else {
+                    wemoTimeLastOn.setText("Last On: " + stampFormatedDate);
+                }
             }
         }
 

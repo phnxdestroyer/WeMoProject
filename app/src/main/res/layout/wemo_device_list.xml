@@ -16,15 +16,6 @@
         android:textSize="18dp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name"
-        android:maxLines="1"
-        android:text="Description"
-        android:textSize="16dp" />
-
     <Switch
         android:id="@+id/powerswitch"
         android:layout_width="wrap_content"
@@ -37,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/powerswitch"
         android:text="show"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentLeft="true"/>
 
     <Button
         android:id="@+id/editbuttonhide"
@@ -46,7 +37,7 @@
         android:layout_below="@id/powerswitch"
         android:text="hide"
         android:visibility="gone"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentLeft="true"/>
 
 
 
