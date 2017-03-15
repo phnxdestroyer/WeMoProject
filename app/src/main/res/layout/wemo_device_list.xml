@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/powerswitch"
         android:text="show"
+        android:visibility="gone"
         android:layout_alignParentLeft="true"/>
 
     <Button
