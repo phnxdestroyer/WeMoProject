@@ -294,8 +294,6 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
                     if(Integer.valueOf(sFD)!= null && Integer.valueOf(sFD) > 12){
                         int pm = Integer.valueOf(sFD) % 12;
                         wemoTimeLastOn.setText("Last On: " + pm + ":" +sFDminutes+" PM");
-                        wemoTimeLastOn.setText("Last On: " + stampFormatedDate);
-
                     } else {
                         wemoTimeLastOn.setText("Last On: " + sFD + " AM");
                     }
