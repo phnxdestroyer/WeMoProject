@@ -62,7 +62,7 @@ public class RViewAdapter extends RecyclerView.Adapter<RViewAdapter.CustomViewHo
             Log.e("RViewAdapter","graphs.containsKey(device)=true");
             DataPoint v = new DataPoint(Double.valueOf(insignSwitch.getOnNowForSeconds()),Double.valueOf(insignSwitch.getInstantPowerMilliWatts()));
             //DataPoint t = new DataPoint(Double.valueOf(insignSwitch.getOnTotal()),Double.valueOf(insignSwitch.getInstantPowerMilliWatts()));
-            graphs.get(device).appendData(v,true,10);
+            graphs.get(device).appendData(v,true,50);
 
             holder.updateGraph(insignSwitch.getOnNowForSeconds(),insignSwitch.getInstantPowerMilliWatts(),v);
 
