@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.csusb.wemo">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -14,25 +14,27 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".reference.MainActivity">
-
-        </activity>
-
-        <activity android:name=".ui.WemoActivity">
+        //Loading Screen
+        <activity
+            android:name=".ui.WemoSplashScreen"
+            android:theme="@style/Full">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        //Main
+        <activity
+            android:name=".ui.WemoActivity"
+            android:theme="@style/Full" />
+        //About
+        <activity
+            android:name=".ui.AboutActivity"
+            android:theme="@style/AppTheme" />
 
-        <service android:name="org.fourthline.cling.android.AndroidUpnpServiceImpl"/>
-
-        <service android:name=".service.WemoService"/>
-
+        <service android:name="org.fourthline.cling.android.AndroidUpnpServiceImpl" />
+        <service android:name=".service.WemoService" />
     </application>
-
-
-
 
 </manifest>

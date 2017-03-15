@@ -84,7 +84,11 @@ public class WemoServiceInteractor {
     public void searchForWemo(){
         Log.e("WemoService","searchForWemo");
 
-        upnpService.getControlPoint().search(new ServiceTypeHeader(new ServiceType("Belkin", "basicevent", 1)));
+        if(isServiceBound) {
+            if(upnpService!=null) {
+                upnpService.getControlPoint().search(new ServiceTypeHeader(new ServiceType("Belkin", "basicevent", 1)));
+            }
+        }
     }
 
     /**
