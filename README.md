@@ -41,6 +41,7 @@ Universal Plug and Play (UPnP) is a set of networking protocols that permits net
 *	Subscribe to to changes of properties of a device.
 *	Invoke actions on the device. Such as “GetBinaryState” and “SetBinaryState”
 <img src="https://github.com/phnxdestroyer/WeMoProject/blob/master/markdown/action%20services.png" width="300">
+
 ### Relationship with the Presenter layer
 
 The presenter uses these methods to request data from the UPNP service. 
